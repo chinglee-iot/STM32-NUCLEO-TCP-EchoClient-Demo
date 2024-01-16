@@ -3,10 +3,10 @@
 
 #include <stdint.h>
 
+/*-----------------------------------------------------------*/
+
 #define PLATFORM_EXCEPTION_INFO_START_ADDRESS         ADDR_FLASH_SECTOR_0_BANK2
 #define PLATFORM_EXCEPTION_INFO_MAX_SIZE              ( USER_FLASH_END_ADDRESS - APPLICATION_ADDRESS )
-
-#define PLATFORM_BYTES_TO_WRITE_UNIT( x )             ( ( x ) % 4 == 0 ? ( x / 4 ) : ( ( x ) / 4 ) + 1 )
 
 #define PLATFORM_WRITE_MEDIA( xFlashAddress, pData, xDataLength, pNextFlashAddress ) \
     FLASH_If_Write( xFlashAddress, pData, PLATFORM_BYTES_TO_WRITE_UNIT( xDataLength ), pNextFlashAddress )
@@ -15,6 +15,10 @@
 #define PLATFORM_ROUND_SIZE                           ROUND_SIZE_TO_FLASH
 
 #define PLATFORM_MEDIA_OK                             ( 0 )
+
+/*-----------------------------------------------------------*/
+
+#define PLATFORM_BYTES_TO_WRITE_UNIT( x )             ( ( x ) % 4 == 0 ? ( ( x ) / 4 ) : ( ( x ) / 4 ) + 1 )
 
 /* Use bank 2 for the exception information. */
 #define APPLICATION_ADDRESS         ADDR_FLASH_SECTOR_0_BANK2
@@ -48,7 +52,7 @@
 #define  FLASHIF_WRITINGCTRL_ERROR      ( -2 )
 #define  FLASHIF_WRITING_ERROR          ( -3 )
 
-#define  ROUND_SIZE_TO_FLASH( x )    ( x % 32 == 0 ? x : ( ( x / 32 ) + 1 ) * 32 )
+#define  ROUND_SIZE_TO_FLASH( x )    ( ( x ) % 32 == 0 ? ( x ) : ( ( ( x ) / 32 ) + 1 ) * 32 )
 
 uint32_t FLASH_If_Erase(uint32_t StartSector);
 uint32_t FLASH_If_Write(uint32_t FlashAddress, uint32_t* Data ,uint32_t DataLength, uint32_t *pNextFlashAddress );
